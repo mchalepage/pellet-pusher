@@ -4,37 +4,36 @@ import './Header.css'
 import {Link} from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import {connect} from 'react-redux'
-import {logoutUser} from '../../ducks/reducer'
+import {logoutUser, getUser} from '../../ducks/reducer'
 import Navbar from 'react-bootstrap/Navbar'
 
 const Header = (props) => {
 
     const [username, setUsername] = useState('')
 
-    
+    useEffect(() => {
+        handleDisplayUsername()
+    }, [])
 
     const handleDisplayUsername = () => {
         axios
-            .get('/api/:user_id/username')
+            .get('/api/:user_id/username', )
             .then(res => {
-                username = res.data
+                setUsername(res.data)
             })
             .catch(err => {
                 alert('Could not fetch username')
                 console.log(err)
             }) 
-        return `${username}`
     }
     
-    const logout = () => {
+    const handleLogout = () => {
         axios.delete('/auth/logout')
         .then(() => {
             props.logoutUser()
             props.history.push('/')
         })
     }
-
-    useEffect(handleDisplayUsername(), [])
 
     return(
         <div>
@@ -46,10 +45,9 @@ const Header = (props) => {
                 <Navbar.Brand href='#home'>Pellet Pusher</Navbar.Brand>
                 <Navbar.Text
                 value={`Welcome, ${username}`}
-                onChange={(e) => setUsername(e.target.value)}
                 />
                 <Link to='/'>
-                    <Button variant='link'>Log Out</Button>
+                    <Button variant='link' onClick={() => handleLogout()}>Log Out</Button>
                 </Link>
             </Navbar>
             
@@ -59,4 +57,4 @@ const Header = (props) => {
 
 const mapStateToProps = (reduxState) => reduxState
 
-export default Header
+export default connect(mapStateToProps, {logoutUser, getUser})(Header)

@@ -17,3 +17,4 @@ function App(props) {
 const mapStateToProps = (reduxState) => reduxState
 
 export default connect(mapStateToProps)(App)
+// export default App

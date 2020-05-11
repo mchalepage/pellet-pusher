@@ -6,6 +6,7 @@ const session = require('express-session')
 const { SERVER_PORT, CONNECTION_STRING, SESSION_SECRET } = process.env
 const authCtrl = require('./controllers/authController')
 const ctrl = require('./controllers/controller')
+const path = require('path')
 
 const app = express()
 
@@ -27,12 +28,20 @@ app.post('/auth/login', authCtrl.login)
 app.delete('/auth/logout', authCtrl.logout)
 app.get('/auth/user', authCtrl.getUser)
 
-//header endpoint
+//fetches user's username
 app.get('/api/username/:id', ctrl.getUsername)
 
 //search component endpoints
 app.get('/api/patients/:id', ctrl.getUserPatients)
 app.get('/api/patient/:id')
+
+
+
+app.use(express.static(__dirname + '/../build'))
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../build/index.html'))
+})
 
 massive({
     connectionString: CONNECTION_STRING,
@@ -43,6 +52,6 @@ massive({
     app.set('db', dbInstance)
     console.log('db connected')
     app.listen(SERVER_PORT, () => {
-        console.log(`Server listening on port ${SERVER_PORT}`)
+        console.log(`Listening on port ${SERVER_PORT}`)
     })
 })

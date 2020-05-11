@@ -3,7 +3,7 @@ import axios from 'axios'
 import './Auth.css'
 import Button from 'react-bootstrap/Button'
 import {Link} from 'react-router-dom'
-import { loginUser } from '../../ducks/reducer'
+import { loginUser, getUser } from '../../ducks/reducer'
 import {connect} from 'react-redux'
 
 const Auth = props => {
@@ -12,8 +12,15 @@ const Auth = props => {
     const [password, setPassword] = useState('')
     const [verPassword, setVerPassword] = useState('')
     const [existingUser, setExistingUser] = useState(true)
+    // const [loggedInUser, setLoggedInUser] = useState({})
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
+        // let res = await axios.post('/auth/login', {
+        //     username,
+        //     password
+        // })
+        // setLoggedInUser({loggedInUser: res.data})
+        // props.history.push('/dashboard')
         const body = {
             username: username,
             password: password
@@ -31,7 +38,14 @@ const Auth = props => {
             })
     }
 
-    const handleRegister = () => {
+    const handleRegister = async () => {
+        // let res = await axios.post('/auth/register', {
+        //     username,
+        //     password
+        // })
+        // setLoggedInUser({loggedInUser: res.data})
+        // props.history.push('/dashboard')
+
         const body = {
             username: username,
             password: password
@@ -71,7 +85,9 @@ const Auth = props => {
                 onChange={(e) => setPassword(e.target.value)}
                 />
                 <br />
-                <Button id='login-button' variant='success' onClick={() => handleLogin()}>Login</Button>
+                <Link to='/dashboard'>
+                    <Button id='login-button' variant='success' onClick={() => handleLogin()}>Login</Button>
+                </Link>
                 <Button id='register-button' variant='outline-success' onClick={() => setExistingUser(false)}>Register</Button>
             </div>
         )
@@ -101,10 +117,13 @@ const Auth = props => {
                 />
                 <br />
                 <Button id='login-button' variant='outline-success' onClick={() => setExistingUser(true)}>Login</Button>
-                <Button id='register-button' variant='success' onClick={() => handleRegister()}>Register</Button>
+                <Link to='/dashboard'>
+                    <Button id='register-button' variant='success' onClick={() => handleRegister()}>Register
+                    </Button>                
+                </Link>
             </div>
         )
     }
 }
 
-export default connect(null, {loginUser})(Auth)
+export default connect(null, {loginUser, getUser})(Auth)

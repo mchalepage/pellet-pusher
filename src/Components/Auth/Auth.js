@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import './Auth.css'
 import Button from 'react-bootstrap/Button'
-import {Link} from 'react-router-dom'
-import { loginUser, getUser } from '../../ducks/reducer'
+import {Link, withRouter} from 'react-router-dom'
+import { loginUser, getUser } from '../../ducks/userReducer'
 import {connect} from 'react-redux'
 
 const Auth = props => {
@@ -32,10 +32,10 @@ const Auth = props => {
                 props.loginUser(res.data)
                 props.history.push('/dashboard')
             })
-            .catch((err) => {
-                alert('Could not log in')
-                console.log(err)
-            })
+            // .catch((err) => {
+            //     alert('Could not log in')
+            //     console.log(err)
+            // })
     }
 
     const handleRegister = async () => {
@@ -56,14 +56,14 @@ const Auth = props => {
             alert('The entered passwords do not match.')
         } else {
             axios.post('/auth/register', body)
-            .then(res => {
+            .then((res) => {
                 props.loginUser(res.data)
                 props.history.push('/dashboard')
             })
-            .catch((err) => {
-                alert('Could not register')
-                console.log(err)
-            })
+            // .catch((err) => {
+            //     alert('Could not register')
+            //     console.log(err)
+            // })
         }
     }
 
@@ -126,4 +126,4 @@ const Auth = props => {
     }
 }
 
-export default connect(null, {loginUser, getUser})(Auth)
+export default connect(null, {loginUser, getUser})(withRouter(Auth))

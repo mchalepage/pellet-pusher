@@ -35,6 +35,13 @@ app.get('/api/username/:id', ctrl.getUsername)
 app.get('/api/patients/:id', ctrl.getUserPatients)
 app.get('/api/patient/:id')
 
+//patient file upload endpoint
+// app.post('/upload', ctrl.uploadPatientFiles)
+
+
+//get patient's visits endpoint
+app.get('/api/:patient_id/visits', ctrl.getPatientVisits)
+app.post('/api/:patient_id_visits', ctrl.savePatientVisit)
 
 
 app.use(express.static(__dirname + '/../build'))

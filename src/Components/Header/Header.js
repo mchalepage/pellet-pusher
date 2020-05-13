@@ -4,7 +4,7 @@ import './Header.css'
 import {Link} from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import {connect} from 'react-redux'
-import {logoutUser, getUser} from '../../ducks/reducer'
+import {logoutUser, getUser} from '../../ducks/userReducer'
 import Navbar from 'react-bootstrap/Navbar'
 
 const Header = (props) => {
@@ -29,9 +29,9 @@ const Header = (props) => {
     
     const handleLogout = () => {
         axios.delete('/auth/logout')
-        .then(() => {
-            props.logoutUser()
-            props.history.push('/')
+        .then((res) => {
+            props.logoutUser(res.data)
+            // props.history.push('/')
         })
     }
 
@@ -46,7 +46,7 @@ const Header = (props) => {
                 <Navbar.Text
                 value={`Welcome, ${username}`}
                 />
-                <Link to='/'>
+                <Link to='/login'>
                     <Button variant='link' onClick={() => handleLogout()}>Log Out</Button>
                 </Link>
             </Navbar>

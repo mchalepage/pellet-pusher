@@ -1,6 +1,5 @@
 const express = require('express')
 const massive = require('massive')
-const {json} = require('body-parser')
 require('dotenv').config()
 const session = require('express-session')
 const { SERVER_PORT, CONNECTION_STRING, SESSION_SECRET } = process.env
@@ -10,7 +9,7 @@ const path = require('path')
 
 const app = express()
 
-app.use(json())
+app.use(express.json())
 
 app.use(session({
     resave: false,

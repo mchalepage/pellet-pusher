@@ -1,25 +1,10 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
+import { Link, withRouter } from 'react-router-dom'
 import axios from 'axios'
 import Search from '../Search/Search'
 import Header from '../Header/Header'
 
 const Dashboard = props => {
-
-    const [user, setUser] = useState({})
-
-    useEffect(() => {
-        handleSessionUser()
-    }, [])
-
-    const handleSessionUser = () => {
-        axios.get('/auth/session-user')
-        .then(res => {
-            setUser(res.data)
-        })
-        .catch(
-            props.history.push('/')
-        )
-    }
 
     return(
         <div className='Dashboard'>
@@ -30,4 +15,4 @@ const Dashboard = props => {
     )
 }
 
-export default Dashboard
+export default withRouter(Dashboard)

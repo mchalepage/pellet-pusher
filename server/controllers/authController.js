@@ -25,7 +25,7 @@ module.exports = {
         return res.status(404).send('Username incorrect')
       }
   
-      const authenticated = bcrypt.compareSync(password, existingUser.password)
+      const authenticated = bcrypt.compareSync(password, existingUser.hash)
   
       if(authenticated){
         delete existingUser.password

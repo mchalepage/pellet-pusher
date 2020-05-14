@@ -21,7 +21,7 @@ const Auth = props => {
         axios.post('/auth/login', body).then(res => {
             props.getUser(res.data)
             props.history.push('/dashboard')
-        }).catch(err => alert(`${err}`))
+        }).catch(err => alert(`Incorrect username or password.`))
     }
 
     const handleRegister = () => {
@@ -33,7 +33,7 @@ const Auth = props => {
             console.log('redux data:', res.data)
             props.getUser(res.data)
             props.history.push('/dashboard')
-        }).catch(err => alert(`${err}`))
+        }).catch(err => alert(`Username already in use.`))
     }
 
     if (existingUser) {

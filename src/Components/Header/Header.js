@@ -40,9 +40,9 @@ const Header = (props) => {
             <Navbar
             fixed='top'
             variant='dark'
-
+            bg='dark'
             >
-                <Navbar.Brand href='#home'>Pellet Pusher</Navbar.Brand>
+                <Navbar.Brand>Pellet Pusher</Navbar.Brand>
                 <Navbar.Text
                 value={`Welcome, ${username}`}
                 />

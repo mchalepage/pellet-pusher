@@ -9,7 +9,9 @@ const Dashboard = props => {
     return(
         <div className='Dashboard'>
             <Header />
-            <h4>Search for an existing patient or click the + to create a new patient</h4>
+            <br />
+            <br />
+            <br />
             <Search />
         </div>
     )

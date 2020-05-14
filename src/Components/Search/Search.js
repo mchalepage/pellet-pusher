@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import './Search.css'
 import {Link} from 'react-router-dom'
+import Container from 'react-bootstrap/Container'
+import Form from 'react-bootstrap/Form'
+import FormControl from 'react-bootstrap/FormControl'
+import Button from 'react-bootstrap/Button'
 
 const Search = props => {
     const [user, setUser] = useState({})
     const [loading, setLoading] = useState(true)
     const [userPatients, setUserPatients] = useState({})
-
-    useEffect(() => {
-        handleSessionUser()
-    }, [])
 
     const handleLoading = () => {
         setLoading(false)
@@ -32,14 +32,14 @@ const Search = props => {
     }
 
     return(
-        <div>
-            <input
-            className='search-bar'
-            placeholder='Search...'
-            type='text'
-            />
-            <button id='create-patient-button'>+</button>
-        </div>
+        <Container bg='light'>
+            <h3>Search for an existing patient or click the + to create a new patient.</h3>
+            <Form inline>
+                <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+                <Button variant="outline-success">Search</Button>
+            </Form>
+            <Button variant='success'>+</Button>
+        </Container>
     )
 }
 

@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import './Auth.css'
 import Button from 'react-bootstrap/Button'
-import {Link, withRouter} from 'react-router-dom'
-import { loginUser, getUser } from '../../ducks/userReducer'
+import { getUser } from '../../ducks/userReducer'
 import {connect} from 'react-redux'
+import AuthHeader from './AuthHeader'
 
 const Auth = props => {
 
@@ -12,64 +12,34 @@ const Auth = props => {
     const [password, setPassword] = useState('')
     const [verPassword, setVerPassword] = useState('')
     const [existingUser, setExistingUser] = useState(true)
-    // const [loggedInUser, setLoggedInUser] = useState({})
 
-    const handleLogin = async () => {
-        // let res = await axios.post('/auth/login', {
-        //     username,
-        //     password
-        // })
-        // setLoggedInUser({loggedInUser: res.data})
-        // props.history.push('/dashboard')
+    const handleLogin = () => {
         const body = {
             username: username,
             password: password
         }
-
-        axios
-            .post('/auth/login', body)
-            .then(res => {
-                props.loginUser(res.data)
-                props.history.push('/dashboard')
-            })
-            // .catch((err) => {
-            //     alert('Could not log in')
-            //     console.log(err)
-            // })
+        axios.post('/auth/login', body).then(res => {
+            props.getUser(res.data)
+            props.history.push('/dashboard')
+        }).catch(err => alert(`${err}`))
     }
 
-    const handleRegister = async () => {
-        // let res = await axios.post('/auth/register', {
-        //     username,
-        //     password
-        // })
-        // setLoggedInUser({loggedInUser: res.data})
-        // props.history.push('/dashboard')
-
+    const handleRegister = () => {
         const body = {
             username: username,
-            password: password
+            password: password,
         }
-
-
-        if(password !== verPassword){
-            alert('The entered passwords do not match.')
-        } else {
-            axios.post('/auth/register', body)
-            .then((res) => {
-                props.loginUser(res.data)
-                props.history.push('/dashboard')
-            })
-            // .catch((err) => {
-            //     alert('Could not register')
-            //     console.log(err)
-            // })
-        }
+        axios.post('/auth/register', body).then(res => {
+            console.log('redux data:', res.data)
+            props.getUser(res.data)
+            props.history.push('/dashboard')
+        }).catch(err => alert(`${err}`))
     }
 
     if (existingUser) {
         return (
             <div>
+                <AuthHeader />
                 <input 
                 type='text' 
                 className='username-input' 
@@ -85,15 +55,14 @@ const Auth = props => {
                 onChange={(e) => setPassword(e.target.value)}
                 />
                 <br />
-                <Link to='/dashboard'>
-                    <Button id='login-button' variant='success' onClick={() => handleLogin()}>Login</Button>
-                </Link>
+                <Button id='login-button' variant='success' onClick={() => handleLogin()}>Login</Button>
                 <Button id='register-button' variant='outline-success' onClick={() => setExistingUser(false)}>Register</Button>
             </div>
         )
     } else {
         return (
             <div>
+                <AuthHeader/>
                 <input 
                 type='text' 
                 className='username-input' 
@@ -117,13 +86,13 @@ const Auth = props => {
                 />
                 <br />
                 <Button id='login-button' variant='outline-success' onClick={() => setExistingUser(true)}>Login</Button>
-                <Link to='/dashboard'>
-                    <Button id='register-button' variant='success' onClick={() => handleRegister()}>Register
-                    </Button>                
-                </Link>
+                <Button id='register-button' variant='success' onClick={() => handleRegister()}>Register
+                </Button>                      
             </div>
         )
     }
 }
 
-export default connect(null, {loginUser, getUser})(withRouter(Auth))
+const mapStateToProps = reduxState => reduxState
+
+export default connect(mapStateToProps, { getUser })(Auth)

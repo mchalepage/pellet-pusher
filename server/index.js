@@ -23,9 +23,9 @@ app.use(session({
 
 
 //auth endpoints
-app.post('/auth/register', authCtrl.register)
-app.post('/auth/login', authCtrl.login)
-app.delete('/auth/logout', authCtrl.logout)
+app.post('/auth/register', authCtrl.registerUser)
+app.post('/auth/login', authCtrl.loginUser)
+app.delete('/auth/logout', authCtrl.logoutUser)
 app.get('/auth/user', authCtrl.getUser)
 
 //fetches user's username

@@ -46,7 +46,7 @@ const Header = (props) => {
                 <Navbar.Text
                 value={`Welcome, ${username}`}
                 />
-                <Link to='/login'>
+                <Link to='/'>
                     <Button variant='link' onClick={() => handleLogout()}>Log Out</Button>
                 </Link>
             </Navbar>

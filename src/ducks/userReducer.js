@@ -1,8 +1,7 @@
 import axios from 'axios'
 
 const initialState = {
-    user: {},
-    isLoggedIn: false
+    user: {}
 }
 
 const LOGIN_USER = 'LOGIN_USER'
@@ -45,6 +44,6 @@ export default function (state = initialState, action) {
         case GET_USER + '_REJECTED':
             return initialState
         default:
-            return initialState
+            return state
     }
 }

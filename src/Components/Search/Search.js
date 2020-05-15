@@ -6,39 +6,58 @@ import Container from 'react-bootstrap/Container'
 import Form from 'react-bootstrap/Form'
 import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
+import FormGroup from 'react-bootstrap/FormGroup'
+import ListGroup from 'react-bootstrap/ListGroup'
+import { search } from './utils'
 
 const Search = props => {
-    const [user, setUser] = useState({})
-    const [loading, setLoading] = useState(true)
-    const [userPatients, setUserPatients] = useState({})
+    const [loading, setLoading] = useState(false)
+    const [searchTerm, setSearchTerm] = useState('')
+    const [searchResults, setSearchResults] = useState([])
+    const [patients, setPatients] = useState([])
 
-    const handleLoading = () => {
-        setLoading(false)
+    const handleChange = e => {
+        setSearchTerm(e.target.value)
     }
 
-    const handleSessionUser = () => {
-        axios.get('/auth/session-user')
-        .then(res => {
-            setUser(res.data)
-            handleGetUserPatients(res.data.user_id)
-        })
-    }
+    useEffect(() => {
+        axios
+            .get(`/api/patients`)
+            .then(res => {
+                setPatients(res.data)
+            })
+            .catch(err => console.log(err))
+    }, [])
 
-    const handleGetUserPatients = async(id) => {
-        await axios.get('/api/:user_id/patients')
-        .then((res) => {
-            setUserPatients(res.data)
-        })
-    }
+    useEffect(() => {
+        const results = patients.filter(matchingPatients => matchingPatients.last_name.toLowerCase().includes(searchTerm))
+        setSearchResults(results)
+    }, [searchTerm, patients])
 
     return(
         <Container bg='light'>
-            <h3>Search for an existing patient or click the + to create a new patient.</h3>
-            <Form inline>
-                <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                <Button variant="outline-success">Search</Button>
+            <h3>Search for an existing patient by name or create a new patient record</h3>
+            <Form>
+                <Form.Row>
+                    <FormGroup as={Col}>
+                        <FormControl
+                        type="text" 
+                        size="lg"
+                        placeholder="Search" 
+                        onChange={handleChange}
+                        value={searchTerm}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Button size="lg" variant='success'>Add New Patient</Button> 
+                    </FormGroup>
+                </Form.Row>       
             </Form>
-            <Button variant='success'>+</Button>
+            <ListGroup>
+                {searchResults.map(matchingPatients => (<ListGroup.Item action>{matchingPatients.first_name} {matchingPatients.last_name}</ListGroup.Item>))}
+            </ListGroup> 
         </Container>
     )
 }

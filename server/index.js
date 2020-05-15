@@ -27,12 +27,11 @@ app.post('/auth/login', authCtrl.loginUser)
 app.delete('/auth/logout', authCtrl.logoutUser)
 app.get('/auth/user', authCtrl.getUser)
 
-//fetches user's username
-app.get('/api/username/:id', ctrl.getUsername)
-
 //search component endpoints
-app.get('/api/patients/:id', ctrl.getUserPatients)
-app.get('/api/patient/:id')
+app.get('/api/patients', ctrl.getPatients)
+
+//patient endpoints
+app.get('/api/:patient_id', ctrl.getPatient)
 
 //patient file upload endpoint
 // app.post('/upload', ctrl.uploadPatientFiles)

@@ -11,21 +11,21 @@ const Header = (props) => {
 
     const [username, setUsername] = useState('')
 
-    useEffect(() => {
-        handleDisplayUsername()
-    }, [])
+    // useEffect(() => {
+    //     handleDisplayUsername()
+    // }, [])
 
-    const handleDisplayUsername = () => {
-        axios
-            .get('/api/:user_id/username', )
-            .then(res => {
-                setUsername(res.data)
-            })
-            .catch(err => {
-                alert('Could not fetch username')
-                console.log(err)
-            }) 
-    }
+    // const handleDisplayUsername = () => {
+    //     axios
+    //         .get('/api/:user_id/username', )
+    //         .then(res => {
+    //             setUsername(res.data)
+    //         })
+    //         .catch(err => {
+    //             alert('Could not fetch username')
+    //             console.log(err)
+    //         }) 
+    // }
     
     const handleLogout = () => {
         axios.delete('/auth/logout')
@@ -44,7 +44,7 @@ const Header = (props) => {
             >
                 <Navbar.Brand>Pellet Pusher</Navbar.Brand>
                 <Navbar.Text
-                value={`Welcome, ${username}`}
+                // value={`Welcome, ${username}`}
                 />
                 <Link to='/'>
                     <Button variant='link' onClick={() => handleLogout()}>Log Out</Button>

@@ -32,6 +32,7 @@ app.get('/api/patients', ctrl.getPatients)
 
 //patient endpoints
 app.get('/api/:patient_id', ctrl.getPatient)
+app.post('/api/patient', ctrl.addPatient)
 
 //patient file upload endpoint
 // app.post('/upload', ctrl.uploadPatientFiles)

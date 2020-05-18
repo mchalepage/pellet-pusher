@@ -10,7 +10,6 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import FormGroup from 'react-bootstrap/FormGroup'
 import ListGroup from 'react-bootstrap/ListGroup'
-import { search } from './utils'
 
 const Search = props => {
     const [loading, setLoading] = useState(false)
@@ -32,7 +31,7 @@ const Search = props => {
     }, [])
 
     useEffect(() => {
-        const results = patients.filter(matchingPatients => matchingPatients.last_name.toLowerCase().includes(searchTerm))
+        const results = patients.filter(matchingPatients => matchingPatients.last_name.toLowerCase().includes(searchTerm) || matchingPatients.first_name.toLowerCase().includes(searchTerm))
         setSearchResults(results)
     }, [searchTerm, patients])
 
@@ -51,7 +50,9 @@ const Search = props => {
                         />
                     </FormGroup>
                     <FormGroup>
-                        <Button size="lg" variant='success'>Add New Patient</Button> 
+                        <Link to='/new-patient'>
+                            <Button size="lg" variant='success'>Add New Patient</Button> 
+                        </Link>
                     </FormGroup>
                 </Form.Row>       
             </Form>

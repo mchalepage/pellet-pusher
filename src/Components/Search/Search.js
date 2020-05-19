@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import './Search.css'
-import {Link} from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
 import Form from 'react-bootstrap/Form'
 import FormControl from 'react-bootstrap/FormControl'
@@ -10,15 +10,30 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import FormGroup from 'react-bootstrap/FormGroup'
 import ListGroup from 'react-bootstrap/ListGroup'
+import { getPatient } from '../../ducks/patientReducer'
+import { connect } from 'react-redux'
 
 const Search = props => {
     const [loading, setLoading] = useState(false)
     const [searchTerm, setSearchTerm] = useState('')
     const [searchResults, setSearchResults] = useState([])
     const [patients, setPatients] = useState([])
+    // const [selectedPatient, setSelectedPatient] = useState({})
+
+    let history = useHistory()
 
     const handleChange = e => {
         setSearchTerm(e.target.value)
+    }
+
+    const handleViewPatient = (patient_id) => {
+        axios
+            .get(`/api/patient/${patient_id}`)
+            .then(res => {
+                getPatient(res.data)
+                history.push(`/patient/${patient_id}`)
+            })
+            .catch(err => alert(err))
     }
 
     useEffect(() => {
@@ -26,6 +41,9 @@ const Search = props => {
             .get(`/api/patients`)
             .then(res => {
                 setPatients(res.data)
+                setTimeout(() => {
+                    setLoading(false)
+                }, 500)
             })
             .catch(err => console.log(err))
     }, [])
@@ -57,10 +75,10 @@ const Search = props => {
                 </Form.Row>       
             </Form>
             <ListGroup>
-                {searchResults.map(matchingPatients => (<ListGroup.Item action>{matchingPatients.first_name} {matchingPatients.last_name}</ListGroup.Item>))}
+    {searchResults.map(matchingPatient => (<ListGroup.Item key={matchingPatient.patient_id} action onClick={handleViewPatient(matchingPatient.patient_id)}>{matchingPatient.patient_id} {matchingPatient.first_name} {matchingPatient.last_name}</ListGroup.Item>))}
             </ListGroup> 
         </Container>
     )
 }
-
-export default Search
+const mapStateToProps = reduxState => reduxState
+export default connect(mapStateToProps, {getPatient})(Search)

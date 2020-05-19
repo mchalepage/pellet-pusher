@@ -1,5 +1,9 @@
 import userReducer from './userReducer'
-import { createStore, applyMiddleware } from 'redux'
+import patientReducer from './patientReducer'
+import { createStore, applyMiddleware, combineReducers } from 'redux'
 import promiseMiddleware from 'redux-promise-middleware'
+import {composeWithDevTools} from 'redux-devtools-extension'
 
-export default createStore(userReducer, applyMiddleware(promiseMiddleware))
+const rootReducer = combineReducers({userReducer, patientReducer})
+
+export default createStore(rootReducer, composeWithDevTools(applyMiddleware(promiseMiddleware)))

@@ -16,7 +16,7 @@ app.use(session({
     saveUninitialized: true,
     secret: SESSION_SECRET,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24
+        maxAge: 1000 * 60 * 60 * 24 * 30
     }
 }))
 
@@ -31,7 +31,7 @@ app.get('/auth/user', authCtrl.getUser)
 app.get('/api/patients', ctrl.getPatients)
 
 //patient endpoints
-app.get('/api/:patient_id', ctrl.getPatient)
+app.get('/api/patient/:patient_id', ctrl.getPatient)
 app.post('/api/patient', ctrl.addPatient)
 
 //patient file upload endpoint

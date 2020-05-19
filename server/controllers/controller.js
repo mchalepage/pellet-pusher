@@ -2,34 +2,30 @@
 
 module.exports = {
     getPatients: async (req, res) => {
-        req.app.get('db').get_patients()
-        .then(patients => res.status(200).send(patients))
-        .catch(err => res.status(500).send({errorMessage: 'Error fetching patients'}, console.log(err)))
+        const db = req.app.get('db')
+        const {user_id} = req.session.user
+
+        const patients = await db.get_patients([user_id])
+
+        res.status(200).send(patients)
     },
     getPatient: async (req, res) => {
-        req.app.get('db').get_patient()
-        .then(patient => res.status(200).send(patient))
-        .catch(err => res.status(500).send({errorMessage: 'Error fetching patient'}, console.log(err)))
+        const db = req.app.get('db')
+        const {patient_id} = req.body
+        const patient = await db.get_patient([patient_id])
+
+        res.status(200).send(patient)
     },
     addPatient: async (req, res) => {
         const db = req.app.get('db')
-        // if(!req.session.user) return res.status(400).send('Please login')
-        // const {users_id} = req.session.user
-        const {first_name, last_name, gender, phone, email} = req.body
-        await db.add_patient([first_name, last_name, gender, phone, email])
+        const {first_name, last_name, date_of_birth, gender, phone, email} = req.body
 
+        const {user_id} = req.session.user
 
-        res.sendStatus(200)
-        // const patients = await db.get_patients()
-        // return res.status(200).send(patients)
-
+        const patient = await db.add_patient(user_id, first_name, last_name, date_of_birth, gender, phone, email)
+        req.session.patient = patient
+        res.status(200).send(req.session.patient)
     },
-    // getUsername: async (req, res) => {
-    //     const { username } = req.params
-    //     req.app.get('db').get_user(username)
-    //     .then(username => res.status(200).send(username))
-    //     .catch(err => res.status(500).send({errorMessage: 'Error fetching username'}, console.log(err)))
-    // },
     getPatientVisits: async (req, res) => {
         const db = req.app.get('db')
         const { patient_id } = req.params

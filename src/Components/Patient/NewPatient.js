@@ -14,6 +14,9 @@ import Visits from '../Visits/Visits'
 import Files from '../Files/Files'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import {getPatient} from '../../ducks/patientReducer'
+import {connect} from 'react-redux'
+import Header from '../Header/Header'
 
 
 function NewPatient(props) {
@@ -24,8 +27,11 @@ function NewPatient(props) {
     const [gender, setGender] = useState('')
     const [phone, setPhone] = useState('')
     const [email, setEmail] = useState('')
+    const [patients, setPatients] = useState([])
+    const [loading, setLoading] = useState(false)
 
-    const handleAddPatient = () => {
+    
+    const submit = () => {
         const body = {
             first_name: firstName,
             last_name: lastName,
@@ -36,13 +42,48 @@ function NewPatient(props) {
         }
         axios
             .post('/api/patient', body)
+            .then(res => {
+                props.getPatient(res.data)
+                props.history.push(`/patient/${res.data.patient_id}`)
+            })
             .catch(err => console.log(err))
+    }
+
+    // const handleGetPatient = () => {
+    //     axios
+    //         .get('api/:patient_id')
+    //         .then(res => {
+    //             setPatient(res.data)
+    //         })
+    //         .catch(err => console.log(err))
+    // }
+    // const handleClickSave = () => {
+    //     handleAddPatient()
+    //     handleGetPatient()
+    // }
+
+    const handleReturnToDashboard = () => {
+        axios.get('/api/patients')
+        .then((res) => {
+            setPatients(res.data)
+            setTimeout(() => {
+                setLoading(false)
+            }, 500)
+        })
+        .catch(err => console.log(err))
     }
 
     return(
         <Container>
+            <Header />
+            <br />
+            <br />
+            <br />
+            <br />
             <h3>Patient Info</h3>
-            <Button variant='link'>{`<`}</Button>
+            <Link to='/dashboard'>
+                <Button variant='link' onClick={handleReturnToDashboard}>Back</Button>
+            </Link>
             <Form>
                 <Form.Row>
                     <Form.Group as={Col} controlId="formGridFirstName">
@@ -59,7 +100,7 @@ function NewPatient(props) {
                     <Form.Group controlId="formGridDOB">
                         <Form.Label>Date of Birth</Form.Label>
                         <br />
-                        <DatePicker id='DOB-datepicker' selected={dateOfBirth} onChange={e => setDateOfBirth(e.target.value)} />
+                        <DatePicker id='DOB-datepicker' selected={dateOfBirth} onChange={date => setDateOfBirth(date)} />
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="formGridGender">
@@ -80,7 +121,7 @@ function NewPatient(props) {
                     </Form.Group>
                 </Form.Row>
                 <Form.Row>
-                    <Button variant="primary" type="submit" onClick={handleAddPatient}>
+                    <Button variant="primary" type="submit" onClick={submit}>
                         Save
                     </Button>
                 </Form.Row>
@@ -88,10 +129,10 @@ function NewPatient(props) {
 
                 </Form.Row>
             </Form>
-            {/* <Visits />
-            <Files /> */}
         </Container>
     )
 }
 
-export default NewPatient
+const mapStateToProps = reduxState => reduxState
+
+export default connect(mapStateToProps, {getPatient})(NewPatient)

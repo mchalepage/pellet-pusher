@@ -4,7 +4,6 @@ import './Visits.css'
 import {Link} from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
 import Button from 'react-bootstrap/Button'
-import VisitForm from '../Visit/VisitForm'
 import SavedVisit from '../Visit/SavedVisit'
 
 function Visits(props) {
@@ -13,13 +12,17 @@ function Visits(props) {
 
     useEffect((patient_id) => {
         axios
-            .get(`/api/${patient_id}/visits`)
+            .get(`/api/patient/${patient_id}/visits`)
             .then(res => setVisits(res.data))
     }, [])
 
-    const addVisit = () => {
+    const addVisit = (patient_id) => {
+        axios
+            .post(`/api/patient/${patient_id}/visit`)
+            // .then(res => )
+
         return (
-            <VisitForm />
+            <SavedVisit />
         )
     }
 

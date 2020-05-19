@@ -33,14 +33,18 @@ app.get('/api/patients', ctrl.getPatients)
 //patient endpoints
 app.get('/api/patient/:patient_id', ctrl.getPatient)
 app.post('/api/patient', ctrl.addPatient)
-
-//patient file upload endpoint
-// app.post('/upload', ctrl.uploadPatientFiles)
-
+app.put('/api/patient/:patient_id', ctrl.updatePatient)
+app.delete('/api/patient/:patient_id', ctrl.deletePatient)
 
 //get patient's visits endpoint
-app.get('/api/:patient_id/visits', ctrl.getPatientVisits)
-app.post('/api/:patient_id_visits', ctrl.savePatientVisit)
+app.get('/api/patient/:patient_id/visits', ctrl.getPatientVisits)
+app.get('/api/patient/:patient_id/visit/:visit_id', ctrl.getPatientVisit)
+app.post('/api/patient/:patient_id/visit', ctrl.makePatientVisit)
+app.put('/api/patient/:patient_id/visit/:visit_id', ctrl.updatePatientVisit)
+app.delete('/api/patient/:patient_id/visit/:visit_id', ctrl.deletePatientVisit)
+
+//patient files endpoints (s3)
+// app.post('/upload', ctrl.uploadPatientFiles)
 
 
 app.use(express.static(__dirname + '/../build'))

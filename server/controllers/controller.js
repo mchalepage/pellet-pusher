@@ -23,8 +23,13 @@ module.exports = {
         const {user_id} = req.session.user
 
         const patient = await db.add_patient(user_id, first_name, last_name, date_of_birth, gender, phone, email)
-        req.session.patient = patient
-        res.status(200).send(req.session.patient)
+        res.status(200).send(patient)
+    },
+    updatePatient: async (req, res) => {
+    
+    },
+    deletePatient: async (req, res) => {
+
     },
     getPatientVisits: async (req, res) => {
         const db = req.app.get('db')
@@ -33,7 +38,16 @@ module.exports = {
 
         res.status(200).send(visits)
     },
-    savePatientVisit: async (req, res) => {
+    getPatientVisit: async (req, res) => {
+
+    },
+    makePatientVisit: async (req, res) => {
         
+    },
+    updatePatientVisit: async (req, res) => {
+
+    },
+    deletePatientVisit: async (req, res) => {
+
     }
 }

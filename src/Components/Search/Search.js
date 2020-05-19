@@ -26,12 +26,12 @@ const Search = props => {
         setSearchTerm(e.target.value)
     }
 
-    const handleViewPatient = (patient_id) => {
+    const handleViewPatient = (patient) => {
         axios
-            .get(`/api/patient/${patient_id}`)
+            .get(`/api/patient/${patient.patient_id}`)
             .then(res => {
                 getPatient(res.data)
-                history.push(`/patient/${patient_id}`)
+                history.push(`/patient/${patient.patient_id}`)
             })
             .catch(err => alert(err))
     }
@@ -68,14 +68,14 @@ const Search = props => {
                         />
                     </FormGroup>
                     <FormGroup>
-                        <Link to='/new-patient'>
+                        <Link to='/patient/new'>
                             <Button size="lg" variant='success'>Add New Patient</Button> 
                         </Link>
                     </FormGroup>
                 </Form.Row>       
             </Form>
             <ListGroup>
-    {searchResults.map(matchingPatient => (<ListGroup.Item key={matchingPatient.patient_id} action onClick={handleViewPatient(matchingPatient.patient_id)}>{matchingPatient.patient_id} {matchingPatient.first_name} {matchingPatient.last_name}</ListGroup.Item>))}
+    {searchResults.map(matchingPatient => (<ListGroup.Item key={matchingPatient.patient_id} action onClick={() => handleViewPatient(matchingPatient)}>{matchingPatient.patient_id} {matchingPatient.first_name} {matchingPatient.last_name}</ListGroup.Item>))}
             </ListGroup> 
         </Container>
     )

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import './Patient.css'
 import {Link} from 'react-router-dom'
@@ -22,6 +23,7 @@ import {getPatient} from '../../ducks/patientReducer'
 
 function Patient(props) {
     
+    const [patient, setPatient] = useState({})
     const [dateOfBirth, setDateOfBirth] = useState(new Date())
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
@@ -30,7 +32,28 @@ function Patient(props) {
     const [email, setEmail] = useState('')
     const [patients, setPatients] = useState([])
     const [loading, setLoading] = useState(false)
-    const [isEditing, setIsEditing] = useState(false)
+    const [isNewPatient, setIsNewPatient] = useState(true)
+    const [isEditing, setIsEditing] = useState(true)
+
+    let history = useHistory()
+
+
+    useEffect((patient_id) => {
+        axios
+            .get(`/api/patient/${patient_id}`)
+            .then(res => {
+                setPatient(res.data)
+                setIsNewPatient(false)
+                setIsEditing(false)
+            })
+            .catch(handleNewUnsavedPatient)
+    }, [isEditing, isNewPatient])
+
+    const handleNewUnsavedPatient = () => {
+        setIsEditing(true)
+        setIsNewPatient(true)
+        history.push('/patient/new')
+    }
 
     const handleReturnToDashboard = () => {
         axios.get('/api/patients')
@@ -43,11 +66,39 @@ function Patient(props) {
         .catch(err => console.log(err))
     }
 
+    const handleGetPatient = () => {
+    }
+
+    const handleAddPatient = () => {
+        const body = {
+            first_name: firstName,
+            last_name: lastName,
+            date_of_birth: dateOfBirth,
+            gender: gender,
+            phone: phone,
+            email: email
+        }
+
+        axios
+            .post('/api/patient', body)
+            .then(res => {
+                props.getPatient(res.data)
+                history.push(`/patient/${res.data.patient_id}`)
+            })
+            .catch(err => console.log(err))
+        setIsEditing(false)
+        setIsNewPatient(false)
+    }
+
     const handleUpdatePatient = () => {
         setIsEditing(false)
     }
 
-    if(!isEditing){
+    const handleDeletePatient = () => {
+
+    }
+
+    if(!isEditing && !isNewPatient){
         return(
             <Container>
                 <Header />
@@ -55,8 +106,12 @@ function Patient(props) {
                 <br />
                 <br />
                 <br />
+                <Link to='/dashboard'>
+                <Button variant='link' onClick={handleReturnToDashboard}>Return to Dashboard</Button>
+                </Link>
+                <h3>Patient Info</h3>
                 <Card style={{width: '80vw'}}>
-                    <Card.Title>Carlet Page</Card.Title>
+                    <Card.Title>{patient.first_name} {patient.last_name}</Card.Title>
                     <Card.Subtitle>Date of Birth: 04/27/1966 <br />Gender: Female</Card.Subtitle>
                     <Card.Body>Phone: 2086973163 <br/> Email: carlet@page.com <br /></Card.Body>
                     <Button variant='link' onClick={() => setIsEditing(true)}>Edit Info</Button>
@@ -65,7 +120,7 @@ function Patient(props) {
                 <Files />
             </Container>
         )
-    } else {
+    } else if (isEditing && !isNewPatient) {
         return (
             <Container>
             <Header />
@@ -73,58 +128,116 @@ function Patient(props) {
             <br />
             <br />
             <br />
-            <h3>Patient Info</h3>
             <Link to='/dashboard'>
-                <Button variant='link' onClick={handleReturnToDashboard}>Back</Button>
+                <Button variant='link' onClick={handleReturnToDashboard}>Return to Dashboard</Button>
             </Link>
-            <Form>
-                <Form.Row>
-                    <Form.Group as={Col} controlId="formGridFirstName">
-                    <Form.Label>First Name</Form.Label>
-                    <Form.Control type="text" placeholder="Enter first name" onChange={e => setFirstName(e.target.value)}/>
-                    </Form.Group>
+            <h3>Patient Info</h3>
+            <Card>
+                <Form>
+                    <Form.Row>
+                        <Form.Group as={Col} controlId="formGridFirstName">
+                        <Form.Label>First Name</Form.Label>
+                        <Form.Control type="text" placeholder="Enter first name" onChange={e => setFirstName(e.target.value)}/>
+                        </Form.Group>
 
-                    <Form.Group as={Col} controlId="formGridLastName">
-                    <Form.Label>Last Name</Form.Label>
-                    <Form.Control type="text" placeholder="Enter last name" onChange={e => setLastName(e.target.value)}/>
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                    <Form.Group controlId="formGridDOB">
-                        <Form.Label>Date of Birth</Form.Label>
-                        <br />
-                        <DatePicker id='DOB-datepicker' selected={dateOfBirth} onChange={date => setDateOfBirth(date)} />
-                    </Form.Group>
+                        <Form.Group as={Col} controlId="formGridLastName">
+                        <Form.Label>Last Name</Form.Label>
+                        <Form.Control type="text" placeholder="Enter last name" onChange={e => setLastName(e.target.value)}/>
+                        </Form.Group>
+                    </Form.Row>
+                    <Form.Row>
+                        <Form.Group controlId="formGridDOB">
+                            <Form.Label>Date of Birth</Form.Label>
+                            <br />
+                            <DatePicker id='DOB-datepicker' selected={dateOfBirth} onChange={date => setDateOfBirth(date)} />
+                        </Form.Group>
 
-                    <Form.Group as={Col} controlId="formGridGender">
-                        <Form.Label>Gender</Form.Label>
-                        <Form.Control as="select" onChange={e => setGender(e.target.value)}>
-                            <option>Choose...</option>    
-                            <option>Male</option>
-                            <option>Female</option>
-                        </Form.Control>
-                    </Form.Group>
-                    <Form.Group as={Col} controlId="formGridPhoneNumber">
-                        <Form.Label>Phone</Form.Label>
-                        <Form.Control type='text' placeholder="(123)456-7890" onChange={e => setPhone(e.target.value)}/>
-                    </Form.Group>
-                    <Form.Group as={Col} controlId="formGridEmail">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control type='text' placeholder="Enter email address" onChange={e => setEmail(e.target.value)}/>
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                    <Button variant="primary" type="submit" onClick={handleUpdatePatient}>
-                        Save
-                    </Button>
-                </Form.Row>
-                <Form.Row>
+                        <Form.Group as={Col} controlId="formGridGender">
+                            <Form.Label>Gender</Form.Label>
+                            <Form.Control as="select" onChange={e => setGender(e.target.value)}>
+                                <option>Choose...</option>    
+                                <option>Male</option>
+                                <option>Female</option>
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group as={Col} controlId="formGridPhoneNumber">
+                            <Form.Label>Phone</Form.Label>
+                            <Form.Control type='text' placeholder="(123)456-7890" onChange={e => setPhone(e.target.value)}/>
+                        </Form.Group>
+                        <Form.Group as={Col} controlId="formGridEmail">
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control type='text' placeholder="Enter email address" onChange={e => setEmail(e.target.value)}/>
+                        </Form.Group>
+                    </Form.Row>
+                    <Form.Row>
+                        <Button variant="primary" type="submit" onClick={handleUpdatePatient}>
+                            Save
+                        </Button>
+                    </Form.Row>
+                    <Form.Row>
 
-                </Form.Row>
-            </Form>
+                    </Form.Row>
+                </Form>
+            </Card>
+            <Visits />
+            <Files />
             </Container>
         )
-    } 
+    } else if (isEditing && isNewPatient){
+        return(
+            <Container>
+                <Header />
+                <br />
+                <br />
+                <br />
+                <br />
+                <Link to='/dashboard'>
+                <Button variant='link' onClick={handleReturnToDashboard}>Return to Dashboard</Button>
+                </Link>
+                <h3>Patient Info</h3>
+                <Card>
+                <Form>
+                    <Form.Row>
+                        <Form.Group as={Col} controlId="formGridFirstName">
+                        <Form.Label>First Name</Form.Label>
+                        <Form.Control type="text" placeholder="Enter first name" onChange={e => setFirstName(e.target.value)}/>
+                        </Form.Group>
+
+                        <Form.Group as={Col} controlId="formGridLastName">
+                        <Form.Label>Last Name</Form.Label>
+                        <Form.Control type="text" placeholder="Enter last name" onChange={e => setLastName(e.target.value)}/>
+                        </Form.Group>
+                    </Form.Row>
+                    <Form.Row>
+                        <Form.Group controlId="formGridDOB">
+                            <Form.Label>Date of Birth</Form.Label>
+                            <br />
+                            <DatePicker id='DOB-datepicker' selected={dateOfBirth} onChange={date => setDateOfBirth(date)} />
+                        </Form.Group>
+
+                        <Form.Group as={Col} controlId="formGridGender">
+                            <Form.Label>Gender</Form.Label>
+                            <Form.Control as="select" onChange={e => setGender(e.target.value)}>
+                                <option>Choose...</option>    
+                                <option>Male</option>
+                                <option>Female</option>
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group as={Col} controlId="formGridPhoneNumber">
+                            <Form.Label>Phone</Form.Label>
+                            <Form.Control type='text' placeholder="(123)456-7890" onChange={e => setPhone(e.target.value)}/>
+                        </Form.Group>
+                        <Form.Group as={Col} controlId="formGridEmail">
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control type='text' placeholder="Enter email address" onChange={e => setEmail(e.target.value)}/>
+                        </Form.Group>
+                    </Form.Row>
+                </Form>
+                    <Button variant='success' onClick={handleAddPatient}>Save Patient</Button>
+                </Card>
+            </Container>
+        )
+    }
 }
 
 const mapStateToProps = reduxState => reduxState

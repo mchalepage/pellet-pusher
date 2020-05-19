@@ -6,7 +6,8 @@ const initialState = {
 
 const GET_PATIENT = 'GET_PATIENT'
 
-export function getPatient(patient){
+export function getPatient(){
+    const patient = axios.get('/api/patient')
     return {
         type: GET_PATIENT,
         payload: patient

@@ -35,6 +35,10 @@ const Search = props => {
             })
             .catch(err => alert(err))
     }
+    
+    const handleAddPatient = () => {
+        history.push('/patient/new')
+    }
 
     useEffect(() => {
         axios
@@ -68,9 +72,7 @@ const Search = props => {
                         />
                     </FormGroup>
                     <FormGroup>
-                        <Link to='/patient/new'>
-                            <Button size="lg" variant='success'>Add New Patient</Button> 
-                        </Link>
+                        <Button size="lg" variant='success' onClick={() => handleAddPatient()}>Add New Patient</Button> 
                     </FormGroup>
                 </Form.Row>       
             </Form>

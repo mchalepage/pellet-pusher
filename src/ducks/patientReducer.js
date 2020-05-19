@@ -1,13 +1,13 @@
 import axios from 'axios'
 
 const initialState = {
-    patient: {}
+    patient: {},
 }
 
 const GET_PATIENT = 'GET_PATIENT'
 
-export function getPatient(){
-    const patient = axios.get('/api/patient')
+export function getPatient(patient_id){
+    const patient = axios.get(`/api/patient/${patient_id}`)
     return {
         type: GET_PATIENT,
         payload: patient

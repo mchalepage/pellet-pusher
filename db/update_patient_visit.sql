@@ -1,0 +1,3 @@
+update patient_visits
+set date = $2, visit_type = $3, HPI = $4, AMS_symptom_score = $5, MRS_symptom_score = $6, current_stress_level = $7, sleep = $8, mood = $9, energy = $10, libido = $11, exercise = $12, diet = $13, meds = $14, supplements = $15, vitals_bp_systolic = $16, vitals_bp_diastolic = $17, vitals_spo2 = $18, weight = $19, height = $20, bmi = $21, pbf = $22, vfl = $23, testicular_hypofunction_e29_1 = $24, menopausal_and_female_climacteric_states = $25, notes = $26, side_of_pellets = $27 
+where visit_id = $1;

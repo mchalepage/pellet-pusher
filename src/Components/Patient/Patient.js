@@ -38,27 +38,31 @@ function Patient(props) {
     let history = useHistory()
 
 
-    useEffect((patient_id) => {
+    useEffect(() => {
         axios
-            .get(`/api/patient/${patient_id}`)
+            .get(`/api/patient/${props.patient_id}`)
             .then(res => {
                 setPatient(res.data)
                 setIsNewPatient(false)
                 setIsEditing(false)
             })
-            .catch(handleNewUnsavedPatient)
-    }, [isEditing, isNewPatient])
+            .catch(err => console.log(err))
+    }, [props.patient_id])
 
-    const handleNewUnsavedPatient = () => {
-        setIsEditing(true)
-        setIsNewPatient(true)
-        history.push('/patient/new')
-    }
+    
+    // const handleNewUnsavedPatient = () => {
+    //     setIsEditing(true)
+    //     setIsNewPatient(true)
+    //     history.push('/patient/new')
+    // }
 
     const handleReturnToDashboard = () => {
         axios.get('/api/patients')
         .then((res) => {
             setPatients(res.data)
+            history.push('/dashboard')
+            setIsNewPatient(true)
+            setIsEditing(true)
             setTimeout(() => {
                 setLoading(false)
             }, 500)
@@ -106,9 +110,7 @@ function Patient(props) {
                 <br />
                 <br />
                 <br />
-                <Link to='/dashboard'>
-                <Button variant='link' onClick={handleReturnToDashboard}>Return to Dashboard</Button>
-                </Link>
+                <Button variant='link' onClick={() => handleReturnToDashboard()}>Return to Dashboard</Button>
                 <h3>Patient Info</h3>
                 <Card style={{width: '80vw'}}>
                     <Card.Title>{patient.first_name} {patient.last_name}</Card.Title>
@@ -128,9 +130,7 @@ function Patient(props) {
             <br />
             <br />
             <br />
-            <Link to='/dashboard'>
-                <Button variant='link' onClick={handleReturnToDashboard}>Return to Dashboard</Button>
-            </Link>
+            <Button variant='link' onClick={() => handleReturnToDashboard()}>Return to Dashboard</Button>
             <h3>Patient Info</h3>
             <Card>
                 <Form>
@@ -170,7 +170,7 @@ function Patient(props) {
                         </Form.Group>
                     </Form.Row>
                     <Form.Row>
-                        <Button variant="primary" type="submit" onClick={handleUpdatePatient}>
+                        <Button variant="primary" type="submit" onClick={() => handleUpdatePatient()}>
                             Save
                         </Button>
                     </Form.Row>
@@ -191,9 +191,7 @@ function Patient(props) {
                 <br />
                 <br />
                 <br />
-                <Link to='/dashboard'>
-                <Button variant='link' onClick={handleReturnToDashboard}>Return to Dashboard</Button>
-                </Link>
+                <Button variant='link' onClick={() => handleReturnToDashboard()}>Return to Dashboard</Button>
                 <h3>Patient Info</h3>
                 <Card>
                 <Form>
@@ -233,7 +231,7 @@ function Patient(props) {
                         </Form.Group>
                     </Form.Row>
                 </Form>
-                    <Button variant='success' onClick={handleAddPatient}>Save Patient</Button>
+                    <Button variant='success' onClick={() => handleAddPatient()}>Save Patient</Button>
                 </Card>
             </Container>
         )

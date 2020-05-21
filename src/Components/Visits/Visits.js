@@ -1,45 +1,52 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import './Visits.css'
-import {Link} from 'react-router-dom'
+import {Link, useLocation, useParams, useHistory} from 'react-router'
 import Container from 'react-bootstrap/Container'
 import Button from 'react-bootstrap/Button'
-import SavedVisit from '../Visit/SavedVisit'
+import Visit from '../Visit/Visit'
+import Card from 'react-bootstrap/Card'
 
 function Visits(props) {
 
+    let location = useLocation()
+    let history = useHistory()
+    let {patient_id} = useParams()
+
     const [visits, setVisits] = useState([])
 
-    useEffect((patient_id) => {
+    useEffect(() => {
         axios
-            .get(`/api/patient/${patient_id}/visits`)
+            .get(`/api/${patient_id}/visits`)
             .then(res => setVisits(res.data))
-    }, [])
-
-    const addVisit = (patient_id) => {
-        axios
-            .post(`/api/patient/${patient_id}/visit`)
-            // .then(res => )
-
-        return (
-            <SavedVisit />
-        )
-    }
+    }, [patient_id])
 
     const mappedVisits = visits.map((visit, index) => {
         return(
-            <Container
+            <Visit
             data={visit}
             key={visit.visit_id}
             />
         )
 
     })
+
+    const handleAddVisit = () => {
+        axios  
+            .post(`/api/patient/${patient_id}/visit`)
+            .then(res => setVisits(res.data))
+    }
+
     return (
         <Container>
             <h3>Visits</h3>
-            <Button variety='link' onClick={addVisit}>Add Visit</Button>
-            <ul>{mappedVisits}</ul>
+            <Card style={{backgroundColor: 'transparent'}}>
+                <Button variety='link' onClick={() => handleAddVisit(props.patient.patient_id)}>Add Visit</Button>
+                <br />
+                <br />
+                <Visit />
+                <ul>{visits}</ul>
+            </Card>
         </Container>
     )
 }

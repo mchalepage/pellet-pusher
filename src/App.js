@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 
 function App(props) {
     return (
-      <div className='App'>
+      <div className='App' style={{backgroundColor: '#e4ebf5', width: '100vw'}}>
         {routes}
       </div>
     )

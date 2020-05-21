@@ -7,7 +7,6 @@ import {connect} from 'react-redux'
 import AuthHeader from './AuthHeader'
 import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
-import FormControl from 'react-bootstrap/FormControl'
 
 const Auth = props => {
 
@@ -43,10 +42,9 @@ const Auth = props => {
         return (
             <div style={{height: '100vh', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', backgroundColor: '#e4ebf5'}}>
                 <AuthHeader style={{display: 'flex'}} />
-                <Card style={{backgroundColor: '#f7f8fa', width: '250px', height: '250px', display: 'flex', justifyContent: 'space-between'}}>
+                <Card style={{backgroundColor: 'transparent', width: '250px', height: '250px', display: 'flex', justifyContent: 'space-between'}}>
                     <div style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'column'}}>
                         <Form.Control
-                        style={{backgroundColor: 'transparent'}}
                         type='text' 
                         className='username-input' 
                         placeholder='Username'
@@ -54,7 +52,6 @@ const Auth = props => {
                         onChange={(e) => setUsername(e.target.value)}
                         />
                         <Form.Control 
-                        style={{backgroundColor: 'transparent'}}
                         type='password' 
                         className='password-input' 
                         placeholder='Password'
@@ -73,10 +70,9 @@ const Auth = props => {
         return (
             <div style={{height: '100vh', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', backgroundColor: '#e4ebf5'}}>
                 <AuthHeader style={{display: 'flex'}}/>
-                <Card style={{backgroundColor: '#f7f8fa', width: '250px', height: '250px', display: 'flex', justifyContent: 'space-between'}}>
-                    <div style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'column'}}>
+                <Card style={{width: '250px', height: '250px', display: 'flex', justifyContent: 'space-between', backgroundColor: 'transparent'}}>
+                    <div style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'column', backgroundColor: 'transparent'}}>
                         <Form.Control 
-                        style={{backgroundColor: 'transparent'}}
                         type='text' 
                         className='username-input' 
                         placeholder='Username'
@@ -84,7 +80,6 @@ const Auth = props => {
                         onChange={(e) => setUsername(e.target.value)}
                         />
                         <Form.Control
-                        style={{backgroundColor: 'transparent'}} 
                         type='password' 
                         className='password-input' 
                         placeholder='Password'
@@ -92,7 +87,6 @@ const Auth = props => {
                         onChange={(e) => setPassword(e.target.value)}
                         />
                         <Form.Control 
-                        style={{backgroundColor: 'transparent'}}
                         type='password' 
                         className='password-input' 
                         placeholder='Verify Password'

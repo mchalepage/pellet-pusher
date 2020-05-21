@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import './Search.css'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useHistory, useLocation, useParams } from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
 import Form from 'react-bootstrap/Form'
 import FormControl from 'react-bootstrap/FormControl'
@@ -20,6 +20,8 @@ const Search = props => {
     const [patients, setPatients] = useState([])
 
     let history = useHistory()
+    let location = useLocation()
+    let { patient_id } = useParams()
 
 
     const handleChange = e => {
@@ -58,8 +60,8 @@ const Search = props => {
     }, [searchTerm, patients])
 
     return(
-        <Container bg='light'>
-            <h3>Search for an existing patient by name or create a new patient record</h3>
+        <Container style={{width: '100vw', backgroundColor: '#e4ebf5'}}>
+            <h5>Search for an existing patient by name or create a new patient record</h5>
             <Form>
                 <Form.Row>
                     <FormGroup as={Col}>
@@ -72,11 +74,11 @@ const Search = props => {
                         />
                     </FormGroup>
                     <FormGroup>
-                        <Button size="lg" variant='success' onClick={() => handleClickAddPatient()}>Add New Patient</Button> 
+                        <Button size="lg" variant='primary' onClick={() => handleClickAddPatient()}>Add New Patient</Button> 
                     </FormGroup>
                 </Form.Row>       
             </Form>
-            <ListGroup>
+            <ListGroup style={{backgroundColor: '#e4ebf5'}}>
                 {searchResults.map(patient => (
                     <ListGroup.Item key={patient.patient_id} action>
                         <Link to={`/patient/${patient.patient_id}`}>

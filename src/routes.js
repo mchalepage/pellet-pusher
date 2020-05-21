@@ -9,7 +9,7 @@ export default(
     <Switch>
         <Route exact path='/' component={Auth} />
         <Route path='/dashboard' component={Dashboard} />
-        <Route path='/new-patient' component={NewPatient} />
+        <Route path='/patient/new' component={NewPatient} />
         <Route path='/:patient_id' component={Patient} />
     </Switch>
 )

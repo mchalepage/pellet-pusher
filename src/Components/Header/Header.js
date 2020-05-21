@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button'
 import {connect} from 'react-redux'
 import {logoutUser, getUser} from '../../ducks/userReducer'
 import Navbar from 'react-bootstrap/Navbar'
+import Nav from 'react-bootstrap/Nav'
 
 const Header = (props) => {
 
@@ -36,22 +37,20 @@ const Header = (props) => {
     }
 
     return(
-        <div>
-            <Navbar
-            fixed='top'
-            variant='dark'
-            bg='dark'
-            >
-                <Navbar.Brand>Pellet Pusher</Navbar.Brand>
-                <Navbar.Text
-                // value={`Welcome, ${username}`}
-                />
+        <Navbar
+        fixed='top'
+        variant='dark'
+        bg='dark'
+        style={{display: 'flex', justifyContent: 'space-between'}}
+        >
+            <Navbar.Brand>Pellet Pusher</Navbar.Brand>
+            {/* <Navbar.Text>Logged in as: {props.userReducer.user.username} </Navbar.Text> */}
+            <Nav>
                 <Link to='/'>
                     <Button variant='link' onClick={() => handleLogout()}>Log Out</Button>
                 </Link>
-            </Navbar>
-            
-        </div>
+            </Nav>
+        </Navbar>
     )
 }
 

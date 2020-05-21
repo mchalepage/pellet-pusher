@@ -77,3 +77,39 @@ const Files = (props) => {
 }
 
 export default Files
+// import React, { Component } from 'react'
+// var ReactS3Uploader = require('react-s3-uploader')
+
+// class Files extends Component {
+//   constructor(){
+//     super()
+//     this.state = {
+
+//     }
+//   }
+//   render(){
+//     return(
+//       <ReactS3Uploader
+//         signingUrl="/api/signs3"
+//         signingUrlMethod="GET"
+//         accept="image/*"
+//         s3path="/"
+//         preprocess={this.onUploadStart}
+//         onSignedUrl={this.onSignedUrl}
+//         onProgress={this.onUploadProgress}
+//         onError={this.onUploadError}
+//         onFinish={this.onUploadFinish}
+//         signingUrlHeaders={{ additional: headers }}
+//         signingUrlQueryParams={{ additional: query-params }}
+//         signingUrlWithCredentials={ true }      // in case when need to pass authentication credentials via CORS
+//         uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}  // this is the default
+//         contentDisposition="auto"
+//         scrubFilename={(filename) => filename.replace(/[^\w\d_\-.]+/ig, '')}
+//         server="https://localhost:5555/"
+//         inputRef={cmp => this.uploadInput = cmp}
+//         autoUpload={true}
+//       />
+//     )
+//   }
+// }
+// export default Files

@@ -9,24 +9,32 @@
     "aws-sdk": "^2.675.0",
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
+    "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.4.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.1.7-alpha.3",
+    "file-type": "^14.5.0",
+    "fs": "0.0.1-security",
     "massive": "^6.3.0",
+    "multer": "^1.4.2",
+    "multiparty": "^4.2.1",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-bootstrap-date-picker": "^5.1.0",
     "react-datepicker": "^2.15.0",
     "react-dom": "^16.13.1",
+    "react-dropzone": "^11.0.1",
     "react-google-login": "^5.1.14",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
+    "react-s3-uploader": "^4.9.3",
     "react-scripts": "3.4.1",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
-    "redux-promise-middleware": "^6.1.2"
+    "redux-promise-middleware": "^6.1.2",
+    "superagent": "^5.2.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -50,5 +58,21 @@
     ]
   },
   "main": "server/index.js",
-  "proxy": "http://localhost:5555/"
+  "proxy": "http://localhost:5555/",
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "devDependencies": {
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mchalepage/pellet-pusher.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mchalepage/pellet-pusher/issues"
+  },
+  "homepage": "https://github.com/mchalepage/pellet-pusher#readme"
 }

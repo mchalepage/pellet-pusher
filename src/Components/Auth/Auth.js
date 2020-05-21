@@ -5,6 +5,9 @@ import Button from 'react-bootstrap/Button'
 import { getUser } from '../../ducks/userReducer'
 import {connect} from 'react-redux'
 import AuthHeader from './AuthHeader'
+import Card from 'react-bootstrap/Card'
+import Form from 'react-bootstrap/Form'
+import FormControl from 'react-bootstrap/FormControl'
 
 const Auth = props => {
 
@@ -38,56 +41,70 @@ const Auth = props => {
 
     if (existingUser) {
         return (
-            <div>
-                <AuthHeader />
-                <input 
-                type='text' 
-                className='username-input' 
-                placeholder='Username'
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                />
-                <input 
-                type='password' 
-                className='password-input' 
-                placeholder='Password'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                />
-                <br />
-                <Button id='login-button' variant='success' onClick={() => handleLogin()}>Login</Button>
-                <Button id='register-button' variant='outline-success' onClick={() => setExistingUser(false)}>Register</Button>
+            <div style={{height: '100vh', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', backgroundColor: '#e4ebf5'}}>
+                <AuthHeader style={{display: 'flex'}} />
+                <Card style={{backgroundColor: '#f7f8fa', width: '250px', height: '250px', display: 'flex', justifyContent: 'space-between'}}>
+                    <div style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'column'}}>
+                        <Form.Control
+                        style={{backgroundColor: 'transparent'}}
+                        type='text' 
+                        className='username-input' 
+                        placeholder='Username'
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        />
+                        <Form.Control 
+                        style={{backgroundColor: 'transparent'}}
+                        type='password' 
+                        className='password-input' 
+                        placeholder='Password'
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </div>
+                    <div style={{display: 'flex', justifyContent: 'flex-start', flexDirection: 'column'}}>
+                        <Button id='login-button' variant='primary' onClick={() => handleLogin()}>Login</Button>
+                        <Button id='register-button' variant='outline-primary' onClick={() => setExistingUser(false)}>Register</Button>
+                    </div>
+                </Card>
             </div>
         )
     } else {
         return (
-            <div>
-                <AuthHeader/>
-                <input 
-                type='text' 
-                className='username-input' 
-                placeholder='Username'
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                />
-                <input 
-                type='password' 
-                className='password-input' 
-                placeholder='Password'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                />
-                <input 
-                type='password' 
-                className='password-input' 
-                placeholder='Verify Password'
-                value={verPassword}
-                onChange={(e) => setVerPassword(e.target.value)}
-                />
-                <br />
-                <Button id='login-button' variant='outline-success' onClick={() => setExistingUser(true)}>Login</Button>
-                <Button id='register-button' variant='success' onClick={() => handleRegister()}>Register
-                </Button>                      
+            <div style={{height: '100vh', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', backgroundColor: '#e4ebf5'}}>
+                <AuthHeader style={{display: 'flex'}}/>
+                <Card style={{backgroundColor: '#f7f8fa', width: '250px', height: '250px', display: 'flex', justifyContent: 'space-between'}}>
+                    <div style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'column'}}>
+                        <Form.Control 
+                        style={{backgroundColor: 'transparent'}}
+                        type='text' 
+                        className='username-input' 
+                        placeholder='Username'
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        />
+                        <Form.Control
+                        style={{backgroundColor: 'transparent'}} 
+                        type='password' 
+                        className='password-input' 
+                        placeholder='Password'
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        />
+                        <Form.Control 
+                        style={{backgroundColor: 'transparent'}}
+                        type='password' 
+                        className='password-input' 
+                        placeholder='Verify Password'
+                        value={verPassword}
+                        onChange={(e) => setVerPassword(e.target.value)}
+                        />
+                    </div>
+                    <div style={{display: 'flex', justifyContent: 'flex-start', flexDirection: 'column'}}>
+                        <Button id='login-button' variant='outline-primary' onClick={() => setExistingUser(true)}>Login</Button>
+                        <Button id='register-button' variant='primary' onClick={() => handleRegister()}>Register</Button>                      
+                    </div>
+                </Card>
             </div>
         )
     }

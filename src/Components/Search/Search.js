@@ -18,25 +18,25 @@ const Search = props => {
     const [searchTerm, setSearchTerm] = useState('')
     const [searchResults, setSearchResults] = useState([])
     const [patients, setPatients] = useState([])
-    // const [selectedPatient, setSelectedPatient] = useState({})
 
     let history = useHistory()
+
 
     const handleChange = e => {
         setSearchTerm(e.target.value)
     }
 
-    const handleViewPatient = (patient) => {
+    const handleGoToPatient = (patient) => {
         axios
             .get(`/api/patient/${patient.patient_id}`)
             .then(res => {
-                getPatient(res.data)
+                props.getPatient(res.data)
                 history.push(`/patient/${patient.patient_id}`)
             })
             .catch(err => alert(err))
     }
     
-    const handleAddPatient = () => {
+    const handleClickAddPatient = () => {
         history.push('/patient/new')
     }
 
@@ -50,7 +50,7 @@ const Search = props => {
                 }, 500)
             })
             .catch(err => console.log(err))
-    }, [])
+    })
 
     useEffect(() => {
         const results = patients.filter(matchingPatients => matchingPatients.last_name.toLowerCase().includes(searchTerm) || matchingPatients.first_name.toLowerCase().includes(searchTerm))
@@ -72,12 +72,18 @@ const Search = props => {
                         />
                     </FormGroup>
                     <FormGroup>
-                        <Button size="lg" variant='success' onClick={() => handleAddPatient()}>Add New Patient</Button> 
+                        <Button size="lg" variant='success' onClick={() => handleClickAddPatient()}>Add New Patient</Button> 
                     </FormGroup>
                 </Form.Row>       
             </Form>
             <ListGroup>
-    {searchResults.map(matchingPatient => (<ListGroup.Item key={matchingPatient.patient_id} action onClick={() => handleViewPatient(matchingPatient)}>{matchingPatient.patient_id} {matchingPatient.first_name} {matchingPatient.last_name}</ListGroup.Item>))}
+                {searchResults.map(patient => (
+                    <ListGroup.Item key={patient.patient_id} action>
+                        <Link to={`/patient/${patient.patient_id}`}>
+                            {patient.patient_id} {patient.first_name} {patient.last_name}
+                        </Link>
+                    
+                    </ListGroup.Item>))}
             </ListGroup> 
         </Container>
     )

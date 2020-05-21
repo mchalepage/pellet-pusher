@@ -21,16 +21,16 @@ app.use(session({
 }))
 
 
-//auth endpoints
+//auth endpoints (working)
 app.post('/auth/register', authCtrl.registerUser)
 app.post('/auth/login', authCtrl.loginUser)
 app.delete('/auth/logout', authCtrl.logoutUser)
 app.get('/auth/user', authCtrl.getUser)
 
-//search component endpoints
+//search component endpoints (working)
 app.get('/api/patients', ctrl.getPatients)
 
-//patient endpoints
+//patient endpoints (working)
 app.get('/api/patient/:patient_id', ctrl.getPatient)
 app.post('/api/patient', ctrl.addPatient)
 app.put('/api/patient/:patient_id', ctrl.updatePatient)
@@ -38,13 +38,13 @@ app.delete('/api/patient/:patient_id', ctrl.deletePatient)
 
 //get patient's visits endpoint
 app.get('/api/patient/:patient_id/visits', ctrl.getPatientVisits)
-app.get('/api/patient/:patient_id/visit/:visit_id', ctrl.getPatientVisit)
+app.get('/api/visit/:visit_id', ctrl.getPatientVisit)
 app.post('/api/patient/:patient_id/visit', ctrl.makePatientVisit)
-app.put('/api/patient/:patient_id/visit/:visit_id', ctrl.updatePatientVisit)
-app.delete('/api/patient/:patient_id/visit/:visit_id', ctrl.deletePatientVisit)
+app.put('/api/visit/:visit_id', ctrl.updatePatientVisit)
+app.delete('/api/visit/:visit_id', ctrl.deletePatientVisit)
 
-//patient files endpoints (s3)
-// app.post('/upload', ctrl.uploadPatientFiles)
+//S3
+app.get('/api/signs3', ctrl.storePatientImg)
 
 
 app.use(express.static(__dirname + '/../build'))
